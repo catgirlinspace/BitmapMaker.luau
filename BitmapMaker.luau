@@ -55,6 +55,9 @@ function BitmapMaker.createBitmapFile(data: BitmapInputData)
 			table.insert(pixelRow, r)
 		end
 		local extra = 4 - (#pixelRow % 4)
+		if extra == 4 then
+			extra = 0
+		end
 		for i=1, extra do
 			table.insert(pixelRow, 0x00)
 		end
@@ -94,7 +97,11 @@ function BitmapMaker.createBitmapFile(data: BitmapInputData)
 	finalArray[13] = string.byte(pixelOffset[3]) :: number
 	finalArray[14] = string.byte(pixelOffset[4]) :: number
 	
-	local binary = string.char(unpack(finalArray))
+	for i, v in finalArray do
+		finalArray[i] = string.char(v)
+	end
+	
+	local binary = table.concat(finalArray)
 	return binary
 end
 
